@@ -21,6 +21,8 @@ const setupDraw = function(options, api) {
   api.onRemove = setup.onRemove;
   api.types = Constants.types;
   api.options = options;
+  // We expose the context
+  api.ctx = ctx;
 
   return api;
 };

@@ -265,5 +265,10 @@ export default function(ctx) {
     }
   };
 
+  /**
+   * Our own modifications here
+   */
+  api.getCurrentMode = () => currentMode;
+
   return api;
 }
