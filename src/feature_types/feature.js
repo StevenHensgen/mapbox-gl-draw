@@ -59,7 +59,7 @@ Feature.prototype.internal = function(mode) {
 
   return {
     // Reinstate the id  (confirm if this is still required)
-    id: this.id,
+    // id: this.id,
     type: Constants.geojsonTypes.FEATURE,
     properties,
     geometry: {
