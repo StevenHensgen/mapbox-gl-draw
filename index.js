@@ -1,7 +1,7 @@
 import runSetup from './src/setup.js';
 import setupOptions from './src/options.js';
 import setupAPI from './src/api.js';
-import modes from './src/modes/index.js';
+import * as modes from './src/modes/index.js';
 import * as Constants from './src/constants.js';
 import * as lib from './src/lib/index.js';
 
@@ -35,6 +35,6 @@ MapboxDraw.modes = modes;
 MapboxDraw.constants = Constants;
 MapboxDraw.lib = lib;
 
-export { constants, lib, modes }
+
 
 export default MapboxDraw;

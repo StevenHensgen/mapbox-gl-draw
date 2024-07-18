@@ -268,7 +268,7 @@ const geojsonTypes = {
   MULTI_POLYGON: 'MultiPolygon'
 };
 
-const modes$1 = {
+const modes$2 = {
   DRAW_LINE_STRING: 'draw_line_string',
   DRAW_POLYGON: 'draw_polygon',
   DRAW_POINT: 'draw_point',
@@ -328,7 +328,7 @@ sources: sources,
 cursors: cursors,
 types: types$1,
 geojsonTypes: geojsonTypes,
-modes: modes$1,
+modes: modes$2,
 events: events$1,
 updateActions: updateActions,
 meta: meta,
@@ -674,7 +674,7 @@ Feature.prototype.internal = function(mode) {
 
   return {
     // Reinstate the id  (confirm if this is still required)
-    id: this.id,
+    // id: this.id,
     type: geojsonTypes.FEATURE,
     properties,
     geometry: {
@@ -1440,11 +1440,11 @@ function events(ctx) {
     } else if (isKeyModeValid(event.keyCode)) {
       currentMode.keydown(event);
     } else if (event.keyCode === 49 && ctx.options.controls.point) {
-      changeMode(modes$1.DRAW_POINT);
+      changeMode(modes$2.DRAW_POINT);
     } else if (event.keyCode === 50 && ctx.options.controls.line_string) {
-      changeMode(modes$1.DRAW_LINE_STRING);
+      changeMode(modes$2.DRAW_LINE_STRING);
     } else if (event.keyCode === 51 && ctx.options.controls.polygon) {
-      changeMode(modes$1.DRAW_POLYGON);
+      changeMode(modes$2.DRAW_POLYGON);
     }
   };
 
@@ -2124,7 +2124,7 @@ function ui(ctx) {
         container: controlGroup,
         className: classes.CONTROL_BUTTON_LINE,
         title: `LineString tool ${ctx.options.keybindings ? '(l)' : ''}`,
-        onActivate: () => ctx.events.changeMode(modes$1.DRAW_LINE_STRING),
+        onActivate: () => ctx.events.changeMode(modes$2.DRAW_LINE_STRING),
         onDeactivate: () => ctx.events.trash()
       });
     }
@@ -2134,7 +2134,7 @@ function ui(ctx) {
         container: controlGroup,
         className: classes.CONTROL_BUTTON_POLYGON,
         title: `Polygon tool ${ctx.options.keybindings ? '(p)' : ''}`,
-        onActivate: () => ctx.events.changeMode(modes$1.DRAW_POLYGON),
+        onActivate: () => ctx.events.changeMode(modes$2.DRAW_POLYGON),
         onDeactivate: () => ctx.events.trash()
       });
     }
@@ -2144,7 +2144,7 @@ function ui(ctx) {
         container: controlGroup,
         className: classes.CONTROL_BUTTON_POINT,
         title: `Marker tool ${ctx.options.keybindings ? '(m)' : ''}`,
-        onActivate: () => ctx.events.changeMode(modes$1.DRAW_POINT),
+        onActivate: () => ctx.events.changeMode(modes$2.DRAW_POINT),
         onDeactivate: () => ctx.events.trash()
       });
     }
@@ -3291,7 +3291,7 @@ SimpleSelect.clickAnywhere = function (state) {
 
 SimpleSelect.clickOnVertex = function(state, e) {
   // Enter direct select mode
-  this.changeMode(modes$1.DIRECT_SELECT, {
+  this.changeMode(modes$2.DIRECT_SELECT, {
     featureId: e.featureTarget.properties.parent,
     coordPath: e.featureTarget.properties.coord_path,
     startPos: e.lngLat
@@ -3327,7 +3327,7 @@ SimpleSelect.clickOnFeature = function(state, e) {
   // Click (without shift) on any selected feature but a point
   if (!isShiftClick && isFeatureSelected && this.getFeature(featureId).type !== geojsonTypes.POINT) {
     // Enter direct select mode
-    return this.changeMode(modes$1.DIRECT_SELECT, {
+    return this.changeMode(modes$2.DIRECT_SELECT, {
       featureId
     });
   }
@@ -3628,11 +3628,11 @@ DirectSelect.dragVertex = function(state, e, delta) {
 };
 
 DirectSelect.clickNoTarget = function () {
-  this.changeMode(modes$1.SIMPLE_SELECT);
+  this.changeMode(modes$2.SIMPLE_SELECT);
 };
 
 DirectSelect.clickInactive = function () {
-  this.changeMode(modes$1.SIMPLE_SELECT);
+  this.changeMode(modes$2.SIMPLE_SELECT);
 };
 
 DirectSelect.clickActiveFeature = function (state) {
@@ -3708,7 +3708,7 @@ DirectSelect.onTrash = function(state) {
   this.fireActionable(state);
   if (state.feature.isValid() === false) {
     this.deleteFeature([state.featureId]);
-    this.changeMode(modes$1.SIMPLE_SELECT, {});
+    this.changeMode(modes$2.SIMPLE_SELECT, {});
   }
 };
 
@@ -3807,7 +3807,7 @@ DrawPoint.onSetup = function() {
 
 DrawPoint.stopDrawingAndRemove = function(state) {
   this.deleteFeature([state.point.id], { silent: true });
-  this.changeMode(modes$1.SIMPLE_SELECT);
+  this.changeMode(modes$2.SIMPLE_SELECT);
 };
 
 DrawPoint.onTap = DrawPoint.onClick = function(state, e) {
@@ -3816,7 +3816,7 @@ DrawPoint.onTap = DrawPoint.onClick = function(state, e) {
   this.map.fire(events$1.CREATE, {
     features: [state.point.toGeoJSON()]
   });
-  this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.point.id] });
+  this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.point.id] });
 };
 
 DrawPoint.onStop = function(state) {
@@ -3876,7 +3876,7 @@ DrawPolygon.onSetup = function() {
 
 DrawPolygon.clickAnywhere = function(state, e) {
   if (state.currentVertexPosition > 0 && isEventAtCoordinates(e, state.polygon.coordinates[0][state.currentVertexPosition - 1])) {
-    return this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
+    return this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
   }
   this.updateUIClasses({ mouse: cursors.ADD });
   state.polygon.updateCoordinate(`0.${state.currentVertexPosition}`, e.lngLat.lng, e.lngLat.lat);
@@ -3885,7 +3885,7 @@ DrawPolygon.clickAnywhere = function(state, e) {
 };
 
 DrawPolygon.clickOnVertex = function(state) {
-  return this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
+  return this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
 };
 
 DrawPolygon.onMouseMove = function(state, e) {
@@ -3903,9 +3903,9 @@ DrawPolygon.onTap = DrawPolygon.onClick = function(state, e) {
 DrawPolygon.onKeyUp = function(state, e) {
   if (isEscapeKey(e)) {
     this.deleteFeature([state.polygon.id], { silent: true });
-    this.changeMode(modes$1.SIMPLE_SELECT);
+    this.changeMode(modes$2.SIMPLE_SELECT);
   } else if (isEnterKey(e)) {
-    this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
+    this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
   }
 };
 
@@ -3925,7 +3925,7 @@ DrawPolygon.onStop = function(state) {
     });
   } else {
     this.deleteFeature([state.polygon.id], { silent: true });
-    this.changeMode(modes$1.SIMPLE_SELECT, {}, { silent: true });
+    this.changeMode(modes$2.SIMPLE_SELECT, {}, { silent: true });
   }
 };
 
@@ -3977,7 +3977,7 @@ DrawPolygon.toDisplayFeatures = function(state, geojson, display) {
 
 DrawPolygon.onTrash = function(state) {
   this.deleteFeature([state.polygon.id], { silent: true });
-  this.changeMode(modes$1.SIMPLE_SELECT);
+  this.changeMode(modes$2.SIMPLE_SELECT);
 };
 
 const DrawLineString = {};
@@ -4047,7 +4047,7 @@ DrawLineString.onSetup = function(opts) {
 DrawLineString.clickAnywhere = function(state, e) {
   if (state.currentVertexPosition > 0 && isEventAtCoordinates(e, state.line.coordinates[state.currentVertexPosition - 1]) ||
       state.direction === 'backwards' && isEventAtCoordinates(e, state.line.coordinates[state.currentVertexPosition + 1])) {
-    return this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.line.id] });
+    return this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.line.id] });
   }
   this.updateUIClasses({ mouse: cursors.ADD });
   state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
@@ -4060,7 +4060,7 @@ DrawLineString.clickAnywhere = function(state, e) {
 };
 
 DrawLineString.clickOnVertex = function(state) {
-  return this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.line.id] });
+  return this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.line.id] });
 };
 
 DrawLineString.onMouseMove = function(state, e) {
@@ -4077,10 +4077,10 @@ DrawLineString.onTap = DrawLineString.onClick = function(state, e) {
 
 DrawLineString.onKeyUp = function(state, e) {
   if (isEnterKey(e)) {
-    this.changeMode(modes$1.SIMPLE_SELECT, { featureIds: [state.line.id] });
+    this.changeMode(modes$2.SIMPLE_SELECT, { featureIds: [state.line.id] });
   } else if (isEscapeKey(e)) {
     this.deleteFeature([state.line.id], { silent: true });
-    this.changeMode(modes$1.SIMPLE_SELECT);
+    this.changeMode(modes$2.SIMPLE_SELECT);
   }
 };
 
@@ -4099,13 +4099,13 @@ DrawLineString.onStop = function(state) {
     });
   } else {
     this.deleteFeature([state.line.id], { silent: true });
-    this.changeMode(modes$1.SIMPLE_SELECT, {}, { silent: true });
+    this.changeMode(modes$2.SIMPLE_SELECT, {}, { silent: true });
   }
 };
 
 DrawLineString.onTrash = function(state) {
   this.deleteFeature([state.line.id], { silent: true });
-  this.changeMode(modes$1.SIMPLE_SELECT);
+  this.changeMode(modes$2.SIMPLE_SELECT);
 };
 
 DrawLineString.toDisplayFeatures = function(state, geojson, display) {
@@ -4133,8 +4133,13 @@ var modes = {
   draw_line_string: DrawLineString,
 };
 
+var modes$1 = /*#__PURE__*/Object.freeze({
+__proto__: null,
+'default': modes
+});
+
 const defaultOptions = {
-  defaultMode: modes$1.SIMPLE_SELECT,
+  defaultMode: modes$2.SIMPLE_SELECT,
   keybindings: true,
   touchEnabled: true,
   clickBuffer: 2,
@@ -4305,7 +4310,7 @@ const featureTypes = {
 
 function setupAPI(ctx, api) {
 
-  api.modes = modes$1;
+  api.modes = modes$2;
 
   api.getFeatureIdsAt = function(point) {
     const features = featuresAt.click({ point }, null, ctx);
@@ -4411,8 +4416,8 @@ function setupAPI(ctx, api) {
     ctx.store.delete(featureIds, { silent: true });
     // If we were in direct select mode and our selected feature no longer exists
     // (because it was deleted), we need to get out of that mode.
-    if (api.getMode() === modes$1.DIRECT_SELECT && !ctx.store.getSelectedIds().length) {
-      ctx.events.changeMode(modes$1.SIMPLE_SELECT, undefined, { silent: true });
+    if (api.getMode() === modes$2.DIRECT_SELECT && !ctx.store.getSelectedIds().length) {
+      ctx.events.changeMode(modes$2.SIMPLE_SELECT, undefined, { silent: true });
     } else {
       ctx.store.render();
     }
@@ -4424,8 +4429,8 @@ function setupAPI(ctx, api) {
     ctx.store.delete(ctx.store.getAllIds(), { silent: true });
     // If we were in direct select mode, now our selected feature no longer exists,
     // so escape that mode.
-    if (api.getMode() === modes$1.DIRECT_SELECT) {
-      ctx.events.changeMode(modes$1.SIMPLE_SELECT, undefined, { silent: true });
+    if (api.getMode() === modes$2.DIRECT_SELECT) {
+      ctx.events.changeMode(modes$2.SIMPLE_SELECT, undefined, { silent: true });
     } else {
       ctx.store.render();
     }
@@ -4435,7 +4440,7 @@ function setupAPI(ctx, api) {
 
   api.changeMode = function(mode, modeOptions = {}) {
     // Avoid changing modes just to re-select what's already selected
-    if (mode === modes$1.SIMPLE_SELECT && api.getMode() === modes$1.SIMPLE_SELECT) {
+    if (mode === modes$2.SIMPLE_SELECT && api.getMode() === modes$2.SIMPLE_SELECT) {
       if (stringSetsAreEqual((modeOptions.featureIds || []), ctx.store.getSelectedIds())) return api;
       // And if we are changing the selection within simple_select mode, just change the selection,
       // instead of stopping and re-starting the mode
@@ -4444,7 +4449,7 @@ function setupAPI(ctx, api) {
       return api;
     }
 
-    if (mode === modes$1.DIRECT_SELECT && api.getMode() === modes$1.DIRECT_SELECT &&
+    if (mode === modes$2.DIRECT_SELECT && api.getMode() === modes$2.DIRECT_SELECT &&
       modeOptions.featureId === ctx.store.getSelectedIds()[0]) {
       return api;
     }
@@ -4530,7 +4535,7 @@ function MapboxDraw(options) {
   setupDraw(options, this);
 }
 
-MapboxDraw.modes = modes;
+MapboxDraw.modes = modes$1;
 MapboxDraw.constants = Constants;
 MapboxDraw.lib = lib;
 
