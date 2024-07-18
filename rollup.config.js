@@ -9,6 +9,7 @@ import terser from '@rollup/plugin-terser';
 export default {
   input: ['index.js'],
   output: {
+    exports: "named",
     name: 'MapboxDraw',
     file: outputFile,
     format: 'umd',
