@@ -1,0 +1,9 @@
+node_modules/
+npm-debug.log
+.vscode/
+
+dist/bench.js
+dist/bench.js.map
+coverage/
+.nyc_output/
+debug/access_token_generated.js

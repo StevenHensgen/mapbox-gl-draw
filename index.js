@@ -36,6 +36,4 @@ MapboxDraw.modes = modes;
 MapboxDraw.constants = Constants;
 MapboxDraw.lib = lib;
 
-export { modes, lib, Constants as constants };
-
 export default MapboxDraw;
