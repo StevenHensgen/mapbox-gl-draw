@@ -57,9 +57,17 @@ Feature.prototype.internal = function(mode) {
     }
   }
 
+  // Make sure required fields for styling make it onto the display feature
+  // TODO - can we do this from FOND not here?
+  const fields = ["Demand", "Type", "Tier", "Size", "layerId", "CostFactor"];
+  for (const field of fields) {
+    if (this.properties[field] != null) {
+      properties[field] = this.properties[field];
+    }
+  }
+
   return {
-    // Reinstate the id  (confirm if this is still required)
-    // id: this.id,
+    id: this.id,
     type: Constants.geojsonTypes.FEATURE,
     properties,
     geometry: {
