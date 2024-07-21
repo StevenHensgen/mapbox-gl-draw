@@ -265,5 +265,10 @@ export default function(ctx) {
     }
   };
 
+  /**
+   * Biarri: Our own modifications here
+   */
+  api.getCurrentMode = () => currentMode;
+
   return api;
 }

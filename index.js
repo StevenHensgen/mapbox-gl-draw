@@ -21,6 +21,9 @@ const setupDraw = function(options, api) {
   api.types = Constants.types;
   api.options = options;
 
+  // Biarri: We expose the context
+  api.ctx = ctx;
+
   return api;
 };
 
@@ -32,5 +35,7 @@ import modes from './src/modes/index';
 MapboxDraw.modes = modes;
 MapboxDraw.constants = Constants;
 MapboxDraw.lib = lib;
+
+export { modes, lib, Constants as constants };
 
 export default MapboxDraw;
